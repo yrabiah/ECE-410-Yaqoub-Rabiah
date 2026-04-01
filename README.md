@@ -1,2 +1,7 @@
 # ECE-410-Yaqoub-Rabiah
-All files for ECE 410 
+
+**Name:** Yaqoub Rabiah
+**Course:** ECE 410/510 — Hardware for Artificial Intelligence and Machine Learning, Spring 2026
+**Instructor:** Christof Teuscher, Portland State University
+
+**Tentative Project Topic:** TBD
