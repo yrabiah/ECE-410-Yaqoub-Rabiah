@@ -1,0 +1,42 @@
+# FFT Vibration Anomaly Detection — cProfile output
+# Platform : Intel Core Ultra 7 155U, 12-core, 1.7 GHz base / 4.8 GHz boost
+# Python   : 3.12.10 | NumPy FFT backend: pocketfft
+# Config   : N=256 samples/window, fs=10000 Hz, 1000 windows (after warm-up)
+# Dominant kernel: compute_fft -> np.fft.rfft (_pocketfft._raw_fft)
+
+         24002 function calls in 0.038 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     1000    0.011    0.000    0.012    0.000 _pocketfft.py:58(_raw_fft)          <- FFT kernel
+     1000    0.007    0.000    0.014    0.000 fft_profile.py:14(generate_window)
+     2000    0.005    0.000    0.005    0.000 {method 'reduce' of 'numpy.ufunc'}
+     1000    0.003    0.000    0.008    0.000 fft_profile.py:18(compare_threshold)
+     1000    0.002    0.000    0.015    0.000 fft_profile.py:11(compute_fft)      <- application fn
+     1000    0.002    0.000    0.006    0.000 fromnumeric.py:66(_wrapreduction)
+     1000    0.001    0.000    0.003    0.000 fromnumeric.py:86(_wrapreduction_any_all)
+     1000    0.001    0.000    0.001    0.000 {method 'astype' of 'numpy.ndarray'}
+     1000    0.001    0.000    0.007    0.000 fromnumeric.py:3287(prod)
+     1000    0.001    0.000    0.001    0.000 {built-in method builtins.getattr}
+        1    0.001    0.001    0.038    0.038 fft_profile.py:21(run_pipeline)
+     1000    0.001    0.000    0.012    0.000 _pocketfft.py:324(rfft)
+     1000    0.001    0.000    0.004    0.000 fromnumeric.py:2436(any)
+     1000    0.001    0.000    0.023    0.000 fft_profile.py:17(process_window)
+     2000    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+
+--------------------------------------------------------------------------------
+DOMINANT KERNEL IDENTIFICATION
+--------------------------------------------------------------------------------
+Function     : compute_fft (calls np.fft.rfft -> _pocketfft._raw_fft)
+Calls        : 1000
+Total time   : 0.011 s (tottime on _raw_fft) / 0.015 s cumulative for compute_fft
+Per window   : 11 us for FFT core; 38 us full pipeline
+Share        : _raw_fft = 29% of total runtime; compute_fft = 39% cumulative
+
+The 256-point rfft (_raw_fft) is the single most time-consuming function.
+It dominates because it performs all butterfly multiplications and bit-reversal
+permutations. The threshold comparison (compare_threshold) is secondary at ~8%.
+
+Window period at fs=10 kHz : 256/10000 = 25.6 ms
+Pipeline latency per window : 38 us  ->  real-time margin: 673x
