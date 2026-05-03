@@ -1,0 +1,17 @@
+VCD info: dumpfile compute_core.vcd opened for output.
+--- Vector 1: W=0.5+0j, A=100+0j, B=100+0j ---
+    valid_out = 1  (expected 1)
+  PASS            ar_out = 150
+  PASS            ai_out = 0
+  PASS            br_out = 50
+  PASS            bi_out = 0
+--- Vector 2: W=0+0.5j, A=0+100j, B=100+0j ---
+    valid_out = 1  (expected 1)
+  PASS            ar_out = 0
+  PASS            ai_out = 150
+  PASS            br_out = 0
+  PASS            bi_out = 50
+========================================
+PASS  compute_core: 8/8 checks passed
+========================================
+tb_compute_core.sv:135: $finish called at 106000 (1ps)

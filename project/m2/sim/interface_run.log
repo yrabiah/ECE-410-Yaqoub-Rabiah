@@ -1,0 +1,9 @@
+VCD info: dumpfile interface.vcd opened for output.
+--- Write transaction: sending 0xa5c3 ---
+  PASS           rx_data = 0xa5c3
+--- Read transaction: expecting 0x7b2e on MISO ---
+  PASS         miso_word = 0x7b2e
+========================================
+PASS  interface: 2/2 checks passed
+========================================
+tb_interface.sv:164: $finish called at 2335000 (1ps)
