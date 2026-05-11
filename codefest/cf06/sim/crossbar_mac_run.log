@@ -1,0 +1,6 @@
+PASS [TV1 in=[1,-1,1,-1]]: out=[4,0,0,-4]
+PASS [TV2 in=[2,3,-1,2]]: out=[-4,-2,2,4]
+PASS [TV3 in=[0,0,0,0]]: out=[0,0,0,0]
+
+3/3 tests PASS
+tb/tb_crossbar_mac.sv:192: $finish called at 66000 (1ps)
