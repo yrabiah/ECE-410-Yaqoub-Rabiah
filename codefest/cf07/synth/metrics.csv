@@ -1,0 +1,20 @@
+metric,value,unit
+tool,Yosys 0.33 + ABC,
+pdk,sky130A,
+std_cell_library,sky130_fd_sc_hd,
+clock_port,clk,
+clock_period_target,10.0,ns
+design_name,compute_core,
+total_cells,6049,
+register_cells,285,
+chip_area,47356.67,um2
+wire_count,13963,
+wire_bits,15523,
+top_cell_xnor2,935,instances
+top_cell_nand2,713,instances
+top_cell_nor2,583,instances
+top_cell_xor2,550,instances
+top_cell_maj3,460,instances
+synth_warnings_unique,26,
+synth_warnings_total,234,
+abc_delay_target,10000,ps
