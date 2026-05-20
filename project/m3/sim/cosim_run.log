@@ -1,0 +1,12 @@
+=== M3 Co-Simulation: 256-pt FFT butterfly via SPI ===
+Input : A=100+0j  B=100+0j  W=0.5+0j (0x4000)
+Expect: A'=150+0j (0x0096,0x0000)  B'=50+0j (0x0032,0x0000)
+--------------------------------------------------------
+PASS [ar_out] : got 0x0096 (150)
+PASS [ai_out] : got 0x0000 (0)
+PASS [br_out] : got 0x0032 (50)
+PASS [bi_out] : got 0x0000 (0)
+--------------------------------------------------------
+4/4 checks PASS
+PASS — end-to-end co-simulation PASSED
+tb/tb_top.sv:194: $finish called at 32175000 (1ps)

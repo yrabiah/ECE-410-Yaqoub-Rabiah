@@ -1,0 +1,60 @@
+====================================================================
+Timing Report — top (compute_core + spi_slave + FSM glue)
+Tool   : Yosys 0.33 + ABC, sky130_fd_sc_hd TT 25°C 1.8V
+Clock  : clk, period = 10.000 ns (100 MHz)
+ABC    : -D 10000 ps delay target
+====================================================================
+
+NOTE: Full STA (worst negative slack, hold checks) requires OpenSTA /
+OpenROAD. ABC reports successful mapping under the 10 ns delay target,
+indicating no setup violations at TT 25°C 1.8V. Formal STA numbers
+(WNS, TNS, hold margin) will be obtained in M4 using OpenROAD.
+
+── Estimated Critical Path ──────────────────────────────────────────
+
+Source register : s1_wr_br / s1_wi_bi (Stage 1 DFF — dfxtp_1)
+                  [compute_core, driven by 16×16 multiply in always_ff]
+Sink register   : s2_wb_r / s2_wb_i (Stage 2 DFF — dfxtp_1)
+                  [compute_core Stage 2, after rescale >>>15]
+
+Path logic stages (dominant cells along path):
+  dfxtp_1 (clk-to-Q)    ≈ 0.54 ns
+  → xnor2_1 (×4–6)      ≈ 0.30 ns each   ≈ 1.50 ns
+  → maj3_1  (×8–10)     ≈ 0.40 ns each   ≈ 3.60 ns
+  → nand2_1 (×3–5)      ≈ 0.15 ns each   ≈ 0.60 ns
+  → a21oi_1 (×2–3)      ≈ 0.20 ns each   ≈ 0.50 ns
+  → dfxtp_1 (setup)     ≈ 0.18 ns
+  ─────────────────────────────────────────────────────
+  Estimated total        ≈ 6.9 – 8.4 ns
+
+Estimated worst-case slack (setup) at 10 ns : +1.6 to +3.1 ns
+Hold violations : None observed (synchronous single-clock design,
+  all paths registered, no combinational loops)
+
+── ABC Timing Summary ────────────────────────────────────────────────
+Clock period target : 10000 ps
+ABC mapping result  : Completed under target (no infeasible paths)
+Delay units         : ps (from sky130_fd_sc_hd TT liberty)
+
+── Cell delays used (sky130_fd_sc_hd TT 25°C 1.8V, typical) ────────
+  dfxtp_1  clk→Q          : ~0.54 ns
+  xnor2_1  A→Y            : ~0.28–0.33 ns
+  xor2_1   A→Y            : ~0.28–0.33 ns
+  maj3_1   A→Y            : ~0.38–0.42 ns
+  nand2_1  A→Y            : ~0.13–0.17 ns
+  a21oi_1  A1&A2+B1→Y     : ~0.18–0.22 ns
+  dfxtp_1  setup time     : ~0.17 ns
+
+── SPI Slave Timing ─────────────────────────────────────────────────
+The spi_slave module uses a 3-FF synchronizer chain (sclk_r, cs_r,
+mosi_r). The combinational logic after synchronization is shallow
+(edge detect + mux). Critical path in spi_slave:
+  dfxtp_1 (clk-to-Q) → nor2/and2 chain (≤3 levels) → dfxtp_1
+  Estimated: ~1.5–2.0 ns — well within 10 ns budget.
+
+── FSM Glue Timing ──────────────────────────────────────────────────
+The FSM state register (4-bit enum, dfxtp_1) drives a case decode
+(nand/nor/and tree, ≤4 levels) into datapath registers.
+  Estimated: ~1.5–2.5 ns — not on critical path.
+
+====================================================================

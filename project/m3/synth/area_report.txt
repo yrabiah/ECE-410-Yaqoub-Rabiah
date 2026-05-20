@@ -1,0 +1,67 @@
+====================================================================
+Area Report — top (compute_core + spi_slave + FSM glue)
+Tool   : Yosys 0.33 + ABC, sky130_fd_sc_hd TT 25°C 1.8V
+Target : 10 ns (100 MHz), PDK: sky130A
+====================================================================
+
+Total cell area  : 55532.01 µm²
+Total cell count : 7089
+Flip-flop count  : 517 (sky130_fd_sc_hd__dfxtp_1)
+
+Module breakdown (flattened):
+  compute_core  : ~6049 cells / 47357 µm²  (from CF07 standalone run)
+  spi_slave     : ~770 cells  /  ~5500 µm² (estimated from delta)
+  FSM glue      : ~270 cells  /  ~2675 µm² (estimated from delta)
+
+Cell count by type (post-map, sky130_fd_sc_hd):
+  sky130_fd_sc_hd__nand2_1       1164
+  sky130_fd_sc_hd__xnor2_1        921
+  sky130_fd_sc_hd__nor2_1         587
+  sky130_fd_sc_hd__xor2_1         540
+  sky130_fd_sc_hd__dfxtp_1        517
+  sky130_fd_sc_hd__a21oi_1        508
+  sky130_fd_sc_hd__o21ai_0        264
+  sky130_fd_sc_hd__lpflow_isobufsrc_1  284
+  sky130_fd_sc_hd__maj3_1         439
+  sky130_fd_sc_hd__and4_1         174
+  sky130_fd_sc_hd__nor3_1         168
+  sky130_fd_sc_hd__clkinv_1       138
+  sky130_fd_sc_hd__nand2b_1       114
+  sky130_fd_sc_hd__and2_0         113
+  sky130_fd_sc_hd__xnor3_1         89
+  sky130_fd_sc_hd__and3_1          86
+  sky130_fd_sc_hd__xor3_1         121
+  sky130_fd_sc_hd__a31oi_1        126
+  sky130_fd_sc_hd__a22oi_1        198
+  sky130_fd_sc_hd__nand3_1         65
+  sky130_fd_sc_hd__or3_1           54
+  sky130_fd_sc_hd__nand4_1         47
+  sky130_fd_sc_hd__lpflow_inputiso1p_1  40
+  sky130_fd_sc_hd__a211oi_1        21
+  sky130_fd_sc_hd__a21boi_0        23
+  sky130_fd_sc_hd__a22o_1          21
+  sky130_fd_sc_hd__o21a_1          90
+  sky130_fd_sc_hd__a21o_1          38
+  sky130_fd_sc_hd__nor2b_1         42
+  sky130_fd_sc_hd__nor3b_1          6
+  sky130_fd_sc_hd__nor4_1           4
+  sky130_fd_sc_hd__nor4b_1          4
+  sky130_fd_sc_hd__o21bai_1        17
+  sky130_fd_sc_hd__mux2_1           2
+  sky130_fd_sc_hd__a222oi_1        15
+  sky130_fd_sc_hd__o221ai_1         4
+  sky130_fd_sc_hd__nand3b_1         9
+  sky130_fd_sc_hd__a21bo_1          4
+  (additional low-count cells omitted — see openlane_run.log)
+
+Wire statistics:
+  Number of wires      : 15706
+  Number of wire bits  : 17568
+  Number of public wires : 68
+  Number of public wire bits : 752
+
+Area contributors (by cell type, top 3):
+  1. nand2_1  (1164 instances) — general logic / carry chain in multiplier
+  2. xnor2_1  ( 921 instances) — XOR/XNOR in 16×16 multiply sum bits
+  3. nor2_1   ( 587 instances) — general logic and 3-FF synchronizer chains
+====================================================================

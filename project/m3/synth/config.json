@@ -1,0 +1,13 @@
+{
+  "DESIGN_NAME": "top",
+  "VERILOG_FILES": [
+    "dir::../../m2/rtl/compute_core.sv",
+    "dir::../../m2/rtl/interface.sv",
+    "dir::../rtl/top.sv"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 10.0,
+  "PDK": "sky130A",
+  "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+  "NOTES": "OpenLane 2.3.10 was installed (pip install openlane==2.3.10) but aborted at GenerateJsonHeader because yosys 0.33 does not implement the -y Python-scripting flag required by OpenLane 2. Synthesis was run directly with yosys 0.33 + abc + sky130_fd_sc_hd TT 25C 1.8V liberty, producing equivalent cell-level results. Full OpenLane 2 requires yosys >= 0.36 built with Python support."
+}

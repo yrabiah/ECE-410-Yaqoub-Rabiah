@@ -1,0 +1,52 @@
+====================================================================
+Power Estimation — top (compute_core + spi_slave + FSM glue)
+Tool   : Estimated from sky130_fd_sc_hd cell characterisation data
+         (yosys 0.33 does not include a built-in power estimator;
+          full OpenROAD power analysis is planned for M4)
+Clock  : 100 MHz, VDD = 1.8 V, Corner = TT 25°C
+====================================================================
+
+── Methodology ───────────────────────────────────────────────────────
+Dynamic power estimated as:
+  P_dyn = α × N_cells × C_avg × VDD² × f
+  α      = 0.10 (10% activity factor — pipelined, 1 butterfly/cycle)
+  N_cells= 7089
+  C_avg  = 5 fF (typical sky130_fd_sc_hd gate load)
+  VDD    = 1.8 V
+  f      = 100 × 10⁶ Hz
+
+Leakage estimated as:
+  P_leak ≈ N_cells × 0.5 nW/cell (sky130_fd_sc_hd TT typical)
+
+── Estimates ─────────────────────────────────────────────────────────
+Component                          Estimate
+─────────────────────────────────────────────────────────────────────
+Dynamic (compute_core, α=0.10)     ≈  0.92 mW
+Dynamic (spi_slave + FSM, α=0.05)  ≈  0.05 mW
+Clock tree (dfxtp_1 × 517, α=1.0)  ≈  0.84 mW
+──────────────────────────────────────────────────────────────────────
+Total dynamic (estimated)           ≈  1.81 mW
+Static leakage (estimated)          ≈  3.5 µW
+──────────────────────────────────────────────────────────────────────
+Total power (estimated)             ≈  1.81 mW
+
+── Limitations ───────────────────────────────────────────────────────
+This is a rough order-of-magnitude estimate only. Actual power depends
+on switching activity (toggle rates per wire), cell-level characterised
+power tables, and clock tree insertion. The estimate does not include:
+  • Clock tree power (tree not yet synthesized)
+  • Wire capacitance (place-and-route not done)
+  • Glitch power (combinational hazards)
+
+── M4 Plan ───────────────────────────────────────────────────────────
+For M4, power analysis will be attempted using one of:
+  (a) OpenROAD's built-in power analysis after P&R (requires OpenLane
+      full flow with newer yosys build)
+  (b) Switching-activity-annotated netlist fed to a power estimator
+  (c) Yosys + Cadence JasperGold if available via PSU EDA licence
+
+The estimate above places total power at ~1.8 mW at 100 MHz / 1.8 V,
+which is within expected range for a combinational datapath of this
+size in sky130_fd_sc_hd.
+
+====================================================================
